@@ -4,93 +4,174 @@
 
 #include <iostream>
 #include <string>
-#include<ostream>
+#include<vector>
 #include<ctime>
 
 using namespace std;
 
 
-int** create_arr(int size);///
-void swap(int* arr, int size);///
-void vuvid(int** arr, int size);///
-int** mnozhennya(int** arr1, int** arr2, int size);
-int* create_raw(int** arr2, int size, int j);///
-int result(int* raw1, int* raw2, int size);
+
+class Matrix
+{
+public:
+	Matrix(int size);
+	Matrix(const Matrix& other);
+	~Matrix();
+	void vuvid();
+
+	bool operator !=(const Matrix& other);
+	int getnum(int i, int j) { return arr[i][j]; }
+	int getsize() { return size; }
+private:
+	int size = 0;
+	int** arr = nullptr;
+	friend Matrix swap(Matrix A, int size);
+	friend Matrix mnozhennya(Matrix B, Matrix C, int size);
+
+};
+
+
+
+
+Matrix swap(Matrix A, int size);
+
+Matrix mnozhennya(Matrix B, Matrix C, int size);
+
+int result(Matrix B, Matrix C, int i, int j);
 int main()
 {
 	//1
-	srand(time(NULL));
+
 
 	int size;
 
 	cout << "size:";
 	cin >> size;
 
-	int** arr = create_arr(size);
-	vuvid(arr, size);
+	Matrix A1(size);
+	A1.vuvid();
 
-	for (int i = 0; i < size; i++)
-	{
-		swap(arr[i], size);
-	}
+	Matrix A(A1);
 	cout << "RES" << endl;
-	vuvid(arr, size);
+	A.vuvid();
 
 	//2
 
-	system("pause");
-	system("cls");
 
-	int** arr1 = create_arr(size);
+
+	Matrix B(size);
 	cout << "MATR1" << endl;
-	vuvid(arr1, size);
+	B.vuvid();
 
 
-	int** arr2 = create_arr(size);
+	Matrix C(size);
 	cout << "MATR2" << endl;
-	vuvid(arr2, size);
+	C.vuvid();
+	Matrix D(mnozhennya(B, C, size));
 
-	int** arr3 = mnozhennya(arr1, arr2, size);
 	cout << "RES" << endl;
-	vuvid(arr3, size);
+	D.vuvid();
 }
 
-int** create_arr(int size)
-{
 
-	int** arr = new int* [size];
+
+
+
+Matrix swap(Matrix A, int size)
+{
+	for (int i = 0; i < size; i++) {
+		int max = A.arr[i][0];
+		int it = 0;
+
+		for (int j = 0; j < size; j++) {
+			if (max < A.arr[i][j]) {
+				max = A.arr[i][j];
+				it = j;
+			}
+		}
+
+		A.arr[i][it] = A.arr[i][0];
+		A.arr[i][0] = max;
+	}
+	return A;
+}
+
+
+
+
+Matrix mnozhennya(Matrix B, Matrix C, int size)
+{
+	Matrix res(size);
+
+	for (int i = 0; i < size; i++) {
+
+		for (int j = 0; j < size; j++)
+		{
+			res.arr[i][j] = result(B, C, i, j);
+		}
+	}
+	return res;
+}
+
+
+
+
+int result(Matrix B, Matrix C, int i, int j)
+{
+	int res = 0;
+	int size = B.getsize();
+	for (int z = 0; z < size; z++) {
+		res += B.getnum(i, z) * C.getnum(z, j);
+	}
+	return res;
+}
+Matrix::Matrix(int inf)
+{
+	size = inf;
+	arr = new int* [size];
 	for (int i = 0; i < size; i++) {
 		arr[i] = new int[size];
 	}
-
-
-
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			arr[i][j] = rand() % 90 + 10;
 		}
 	}
-
-	return arr;
+	//cout << "NEW" << arr<<endl;
 }
 
-void swap(int* arr, int size)
+Matrix::Matrix(const Matrix& other)
 {
-	int max = arr[0];
-	int it = 0;
-
-	for (int i = 0; i < size; i++) {
-		if (max < arr[i]) {
-			max = arr[i];
-			it = i;
+	if (other.arr != this->arr) {
+		this->size = other.size;
+		this->arr = new int* [this->size];
+		for (int i = 0; i < this->size; i++) {
+			this->arr[i] = new int[this->size];
 		}
+
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				this->arr[i][j] = other.arr[i][j];
+			}
+		}
+		//	cout << "COPY" << this->arr << endl;
 	}
 
-	arr[it] = arr[0];
-	arr[0] = max;
+
 }
 
-void vuvid(int** arr, int size)
+Matrix::~Matrix()
+{
+	//cout << "DELETE" << arr << " ";
+	for (int i = 0; i < size; i++) {
+		delete[] arr[i];
+	}
+	delete[] arr;
+	arr = 0;
+	//	cout << arr << endl;
+}
+
+void Matrix::vuvid()
 {
 	for (int i = 0; i < size; i++) {
 		cout << "|";
@@ -101,34 +182,10 @@ void vuvid(int** arr, int size)
 	}
 }
 
-int** mnozhennya(int** arr1, int** arr2, int size)
-{
-	int** arr = create_arr(size);
-	int* raw;
-	for (int i = 0; i < size; i++) {
-		raw = create_raw(arr2, size, i);
-		for (int j = 0; j < size; j++)
-		{
-			arr[i][j] = result(arr1[j], raw, size);
-		}
-	}
-	return arr;
-}
 
-int* create_raw(int** arr2, int size, int j)
-{
-	int* raw = new int[size];
-	for (int i = 0; i < size; i++) {
-		raw[i] = arr2[i][j];
-	}
-	return raw;
-}
 
-int result(int* raw1, int* raw2, int size)
+bool Matrix::operator!=(const Matrix& other)
 {
-	int res = 0;;
-	for (int i = 0; i < size; i++) {
-		res += raw1[i] * raw2[i];
-	}
-	return res;
+	if (this->arr == other.arr) { return true; }
+	return false;
 }
