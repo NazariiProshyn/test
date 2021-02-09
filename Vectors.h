@@ -5,12 +5,12 @@
 #include<vector>
 #include<ctime>
 
-using namespace std;
 
 
-vector<vector<int>> create_arr(int size);///
-vector<int> swap(vector<int> arr, int size);///
-void vuvid(vector<vector<int>> arr, int size);///
-vector<vector<int>> mnozhennya(vector<vector<int>> arr1, vector<vector<int>> arr2, int size);
-vector<int> create_raw(vector<vector<int>> arr2, int size, int j);///
-int result(vector<int> raw1, vector<int> raw2, int size);
+
+std::vector<std::vector<int>> create_arr(int size);///
+std::vector<int> swap(std::vector<int> arr, int size);///
+void vuvid(std::vector<std::vector<int>> arr, int size);///
+std::vector<std::vector<int>> mnozhennya(std::vector<std::vector<int>> arr1, std::vector<std::vector<int>> arr2, int size);
+std::vector<int> create_raw(std::vector<std::vector<int>> arr2, int size, int j);///
+int result(std::vector<int> raw1, std::vector<int> raw2, int size);

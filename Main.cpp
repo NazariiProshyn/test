@@ -6,18 +6,18 @@
 int main()
 {
 	//1
-	
 
-	int size;
 
-	cout << "size:";
-	cin >> size;
+	size_t size;
+
+	std::cout << "size:";
+	std::cin >> size;
 
 	Matrix A1(size);
 	A1.vuvid();
 
-	Matrix A(swap(A1,size));
-	cout << "RES" << endl;
+	Matrix A(swap(A1));
+	std::cout << "RES" << std::endl;
 	A.vuvid();
 
 	//2
@@ -25,16 +25,16 @@ int main()
 
 
 	Matrix B(size);
-	cout << "MATR1" << endl;
+	std::cout << "MATR1" << std::endl;
 	B.vuvid();
 
 
 	Matrix C(size);
-	cout << "MATR2" << endl;
+	std::cout << "MATR2" << std::endl;
 	C.vuvid();
-	Matrix D(mnozhennya(B, C, size));
+	Matrix D(mnozhennya(B, C));
 
-	cout << "RES" << endl;
+	std::cout << "RES" << std::endl;
 	D.vuvid();
 }
 

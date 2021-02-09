@@ -1,12 +1,12 @@
 #include"Matrix.h"
-Matrix swap(Matrix A, int size)
+Matrix swap(Matrix A)
 {
 
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < A.getsize(); i++) {
 		int max = A.getnum(i, 0);
 		int it = 0;
 
-		for (int j = 0; j < size; j++) {
+		for (int j = 0; j < A.getsize(); j++) {
 			if (max < A.getnum(i, j)) {
 				max = A.getnum(i, j);
 				it = j;
@@ -23,13 +23,13 @@ Matrix swap(Matrix A, int size)
 
 
 
-Matrix mnozhennya(Matrix B, Matrix C, int size)
+Matrix mnozhennya(Matrix B, Matrix C)
 {
-	Matrix res(size);
+	Matrix res(B.getsize());
 
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < B.getsize(); i++) {
 
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < B.getsize(); j++)
 		{
 			res.setnum(result(B, C, i, j), i, j);
 		}
@@ -49,7 +49,7 @@ int result(Matrix B, Matrix C, int i, int j)
 	}
 	return res;
 }
-Matrix::Matrix(int inf)
+Matrix::Matrix(size_t inf)
 {
 	size = inf;
 	arr = new int* [size];
@@ -66,7 +66,7 @@ Matrix::Matrix(int inf)
 
 Matrix::Matrix(const Matrix& other)
 {
-	if (other.arr != this->arr) {
+	
 		this->size = other.size;
 		this->arr = new int* [this->size];
 		for (int i = 0; i < this->size; i++) {
@@ -79,7 +79,7 @@ Matrix::Matrix(const Matrix& other)
 			}
 		}
 		//	cout << "COPY" << this->arr << endl;
-	}
+	
 
 
 }
@@ -98,18 +98,26 @@ Matrix::~Matrix()
 void Matrix::vuvid()
 {
 	for (int i = 0; i < size; i++) {
-		cout << "|";
+		std::cout << "|";
 		for (int j = 0; j < size; j++) {
-			cout << arr[i][j] << " ";
+			std::cout << arr[i][j] << " ";
 		}
-		cout << "|" << endl;
+		std::cout << "|" << std::endl;
 	}
 }
 
-
-
-bool Matrix::operator!=(const Matrix& other)
+Matrix& Matrix::operator=(const Matrix& other)
 {
-	if (this->arr == other.arr) { return true; }
-	return false;
+	Matrix A(other.size);
+
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			A.setnum(other.arr[i][j], i, j);
+		}
+	}
+	return A;
+
 }
+
+
+

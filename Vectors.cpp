@@ -1,6 +1,6 @@
 #include"Vectors.h"
 
-
+using namespace std;
 vector<vector<int>> create_arr(int size)
 {
 
